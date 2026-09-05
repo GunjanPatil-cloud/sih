@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}About — PackCheck{% endblock %}
+
+{% block content %}
+<section class="section" style="padding-top: 120px;">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-badge">About</span>
+            <h2>About PackCheck</h2>
+            <p>Smart India Hackathon Project — Packaged Commodity Compliance & Consumer Awareness System</p>
+        </div>
+        <div class="about-content glass-card" style="padding: 2.5rem; max-width: 800px; margin: 0 auto;">
+            <h3>Problem Statement</h3>
+            <p>Consumers often lack the tools to verify whether packaged products comply with mandatory labelling regulations. Missing MRP, absent manufacturer details, or undeclared expiry dates go unnoticed — putting consumers at risk.</p>
+
+            <h3 style="margin-top: 2rem;">Our Solution</h3>
+            <p>PackCheck uses computer vision (OpenCV + Tesseract OCR) to extract product label information from images, then verifies the data against configurable compliance rules. The result is a transparent compliance score with clear pass/fail indicators and actionable recommendations.</p>
+
+            <h3 style="margin-top: 2rem;">Technology Stack</h3>
+            <ul style="list-style: none; padding: 0;">
+                <li style="padding: 0.4rem 0;">⚙️ <strong>Backend:</strong> Python, Flask, REST API</li>
+                <li style="padding: 0.4rem 0;">🎨 <strong>Frontend:</strong> HTML5, CSS3, Vanilla JavaScript</li>
+                <li style="padding: 0.4rem 0;">🗄️ <strong>Database:</strong> MySQL</li>
+                <li style="padding: 0.4rem 0;">👁️ <strong>Vision:</strong> OpenCV, Tesseract OCR</li>
+                <li style="padding: 0.4rem 0;">📱 <strong>Scanning:</strong> pyzbar (barcode/QR)</li>
+            </ul>
+
+            <p style="margin-top: 2rem; opacity: 0.7; font-size: 0.9rem;">
+                <em>This is a demonstration project built for the Smart India Hackathon. It is not an official regulatory or certification tool.</em>
+            </p>
+        </div>
+    </div>
+</section>
+{% endblock %}

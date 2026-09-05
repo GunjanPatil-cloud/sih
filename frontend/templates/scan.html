@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% block title %}Scan Product | FoodLens{% endblock %}
+
+{% block content %}
+<section class="section scanner-page" id="upload">
+    <div class="shell">
+        <div class="scanner-heading"><p class="eyebrow">Label intelligence</p><h1>Scan or upload your product</h1><p>Search the product database by name, scan a barcode, or upload package photos.</p></div>
+        <div class="product-search" role="search">
+            <label for="productSearch">Search product name</label>
+            <div class="search-field"><span aria-hidden="true">⌕</span><input id="productSearch" type="search" placeholder="e.g. Maggi 2-Minute Masala Noodles" autocomplete="off"><button id="clearSearch" type="button" aria-label="Clear product search">×</button></div>
+            <div class="search-results" id="searchResults" aria-live="polite"></div>
+        </div>
+        <div class="scan-options">
+            <button class="scan-option" id="openCamera" type="button"><span class="feature-icon icon-indigo">⌗</span><strong>Scan barcode / QR</strong><small>Use your camera for an instant lookup.</small><span class="button button-primary button-small">Open camera</span></button>
+            <button class="scan-option" id="openUpload" type="button"><span class="feature-icon icon-green">↑</span><strong>Upload package images</strong><small>Add a front, back, ingredients, or nutrition photo.</small><span class="button button-secondary button-small">Add images</span></button>
+        </div>
+
+        <div class="camera-panel" id="cameraPanel">
+            <div class="camera-view"><div class="reticle"></div><div class="camera-beam"></div><span>Point your camera at a barcode or QR code</span></div>
+            <p class="panel-hint">Camera lookup is ready for a live barcode integration. Use the sample lookup while testing the interface.</p>
+            <div class="demo-actions"><button class="button button-primary" type="button" data-demo-barcode="8901030814">Try sample product</button><button class="button button-secondary" type="button" id="closeCamera">Close</button></div>
+        </div>
+
+        <div class="upload-panel" id="uploadPanel">
+            <div class="panel-heading"><div><h2>Add package photos</h2><p>Clearer ingredient and nutrition photos give more accurate extraction.</p></div><span class="chip chip-indigo">JPG · PNG · WebP</span></div>
+            <div class="upload-grid">
+                {% for key, label in [('front', 'Front'), ('back', 'Back'), ('side', 'Side'), ('ingredients', 'Ingredients'), ('nutrition', 'Nutrition')] %}
+                <label class="upload-slot" data-slot="{{ key }}"><input type="file" accept=".jpg,.jpeg,.png,.webp,image/*"><span class="slot-icon">↑</span><strong>{{ label }}</strong><small>Tap to add</small></label>
+                {% endfor %}
+            </div>
+            <div class="upload-actions"><span id="uploadCount">0 photos selected</span><button class="button button-primary" id="analyzeButton" type="button" disabled>Analyze product →</button></div>
+            <div class="progress-state" id="progressState" aria-live="polite"><div class="progress-track"><span id="progressBar"></span></div><p id="progressText">Preparing your label...</p></div>
+            <div class="scan-error" id="scanError" role="alert"></div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(() => {
+    const uploadPanel = document.getElementById('uploadPanel');
+    const cameraPanel = document.getElementById('cameraPanel');
+    const analyzeButton = document.getElementById('analyzeButton');
+    const countLabel = document.getElementById('uploadCount');
+    const progressState = document.getElementById('progressState');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const errorBox = document.getElementById('scanError');
+    const searchInput = document.getElementById('productSearch');
+    const searchResults = document.getElementById('searchResults');
+    const clearSearch = document.getElementById('clearSearch');
+    const files = new Map();
+
+    const showUpload = () => { uploadPanel.classList.add('visible'); cameraPanel.classList.remove('visible'); uploadPanel.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+    document.getElementById('openUpload').addEventListener('click', showUpload);
+    document.getElementById('openCamera').addEventListener('click', () => { cameraPanel.classList.add('visible'); uploadPanel.classList.remove('visible'); cameraPanel.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+    document.getElementById('closeCamera').addEventListener('click', () => cameraPanel.classList.remove('visible'));
+
+    let searchTimer;
+    searchInput.addEventListener('input', () => {
+        window.clearTimeout(searchTimer);
+        const query = searchInput.value.trim();
+        clearSearch.hidden = !query;
+        if (query.length < 2) {
+            searchResults.innerHTML = '';
+            searchResults.classList.remove('visible');
+            return;
+        }
+        searchTimer = window.setTimeout(async () => {
+            searchResults.innerHTML = '<p class="search-loading">Searching products...</p>';
+            searchResults.classList.add('visible');
+            try {
+                const response = await fetch(`{{ url_for('scan.search_products') }}?q=${encodeURIComponent(query)}`);
+                const data = await response.json();
+                if (!data.products.length) {
+                    searchResults.innerHTML = '<p class="search-empty">No matching products found. Try another name.</p>';
+                    return;
+                }
+                searchResults.innerHTML = data.products.map(product => `
+                    <button class="search-result" type="button" data-product='${JSON.stringify(product).replace(/'/g, '&#39;')}'>
+                        <span class="result-icon">${(product.product_name || '?').charAt(0)}</span>
+                        <span><strong>${product.product_name}</strong><small>${product.brand || product.manufacturer || 'Product'} · ${product.category || 'Packaged commodity'}${product.standard_pack_size ? ` · ${product.standard_pack_size}` : ''}</small></span>
+                    </button>`).join('');
+                searchResults.querySelectorAll('.search-result').forEach(result => result.addEventListener('click', () => {
+                    const product = JSON.parse(result.dataset.product);
+                    searchInput.value = product.product_name;
+                    searchResults.innerHTML = `<div class="selected-product"><strong>${product.product_name}</strong><span>${product.brand || product.manufacturer || ''} · ${product.category || ''} · ${product.standard_pack_size || 'Pack size unavailable'}</span><small>Barcode: ${product.barcode || 'Not recorded'} · ${product.source_status || 'DEMO_VERIFY'}</small></div>`;
+                }));
+            } catch (error) {
+                searchResults.innerHTML = '<p class="search-empty">Product search is temporarily unavailable. You can still upload a label image.</p>';
+            }
+        }, 250);
+    });
+    clearSearch.addEventListener('click', () => { searchInput.value = ''; clearSearch.hidden = true; searchResults.innerHTML = ''; searchResults.classList.remove('visible'); searchInput.focus(); });
+
+    document.querySelectorAll('.upload-slot').forEach(slot => {
+        const input = slot.querySelector('input');
+        input.addEventListener('change', () => {
+            const file = input.files[0];
+            if (!file) return;
+            files.set(slot.dataset.slot, file);
+            slot.classList.add('filled');
+            slot.querySelector('.slot-icon').textContent = '✓';
+            slot.querySelector('small').textContent = file.name;
+            countLabel.textContent = `${files.size} photo${files.size === 1 ? '' : 's'} selected`;
+            analyzeButton.disabled = false;
+        });
+    });
+
+    document.querySelector('[data-demo-barcode]').addEventListener('click', () => {
+        sessionStorage.setItem('barcodeLookup', document.querySelector('[data-demo-barcode]').dataset.demoBarcode);
+        window.location.href = '{{ url_for("scan.result_page") }}';
+    });
+
+    analyzeButton.addEventListener('click', async () => {
+        const file = [...files.values()][0];
+        if (!file) return;
+        const body = new FormData();
+        body.append('image', file);
+        errorBox.textContent = '';
+        progressState.classList.add('visible');
+        analyzeButton.disabled = true;
+        progressBar.style.width = '24%';
+        progressText.textContent = 'Uploading label image...';
+        try {
+            const response = await fetch('{{ url_for("scan.upload_and_process") }}', { method: 'POST', body });
+            const data = await response.json();
+            if (!response.ok || !data.success) throw new Error(data.error || 'The label could not be processed.');
+            progressBar.style.width = '100%';
+            progressText.textContent = 'Analysis complete. Opening report...';
+            sessionStorage.setItem('scanResult', JSON.stringify(data));
+            window.setTimeout(() => { window.location.href = '{{ url_for("scan.result_page") }}'; }, 450);
+        } catch (error) {
+            progressState.classList.remove('visible');
+            errorBox.textContent = error.message;
+            analyzeButton.disabled = false;
+        }
+    });
+
+    if (window.location.hash === '#upload') showUpload();
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,152 @@
+[
+  {
+    "rule_id": "NAME_001",
+    "rule_name": "Product Name Declaration",
+    "field": "product_name",
+    "description": "Product must have a clear name or common/generic name displayed on the package.",
+    "is_required": true,
+    "severity": "HIGH",
+    "failure_message": "Product name is missing or not declared on the package.",
+    "recommendation": "Ensure the product name is clearly printed on the principal display panel."
+  },
+  {
+    "rule_id": "MFG_001",
+    "rule_name": "Manufacturer / Packer / Importer",
+    "field": "manufacturer",
+    "description": "Name and complete address of the manufacturer, packer, or importer must be declared.",
+    "is_required": true,
+    "severity": "HIGH",
+    "failure_message": "Manufacturer/packer/importer name is missing.",
+    "recommendation": "Declare the full name of the manufacturer, packer, or importer as applicable."
+  },
+  {
+    "rule_id": "ADDR_001",
+    "rule_name": "Address Declaration",
+    "field": "address",
+    "description": "Complete address of the manufacturer, packer, or importer must be mentioned.",
+    "is_required": true,
+    "severity": "HIGH",
+    "failure_message": "Address of manufacturer/packer/importer is missing.",
+    "recommendation": "Include the full postal address including city, state, and PIN code."
+  },
+  {
+    "rule_id": "QTY_001",
+    "rule_name": "Net Quantity Declaration",
+    "field": "net_quantity",
+    "description": "Net quantity of the commodity in standard units of weight, measure, or number must be declared.",
+    "is_required": true,
+    "severity": "HIGH",
+    "failure_message": "Net quantity is missing or not declared.",
+    "recommendation": "Declare net quantity in standard metric units (g, kg, ml, L, or number)."
+  },
+  {
+    "rule_id": "MRP_001",
+    "rule_name": "Maximum Retail Price (MRP)",
+    "field": "mrp",
+    "description": "Maximum Retail Price inclusive of all taxes must be declared.",
+    "is_required": true,
+    "severity": "HIGH",
+    "failure_message": "MRP (Maximum Retail Price) is missing.",
+    "recommendation": "Print the MRP inclusive of all taxes in Indian Rupees (₹)."
+  },
+  {
+    "rule_id": "MFD_001",
+    "rule_name": "Manufacturing / Packing Date",
+    "field": "manufacturing_date",
+    "description": "Date of manufacture or packing must be mentioned on the package.",
+    "is_required": true,
+    "severity": "HIGH",
+    "failure_message": "Manufacturing or packing date is not declared.",
+    "recommendation": "Include the month and year of manufacture or packing."
+  },
+  {
+    "rule_id": "EXP_001",
+    "rule_name": "Expiry / Best Before Date",
+    "field": "expiry_date",
+    "description": "Expiry date or best-before date must be mentioned where applicable.",
+    "is_required": true,
+    "severity": "HIGH",
+    "failure_message": "Expiry or best-before date is missing.",
+    "recommendation": "Declare the expiry date or 'Best Before' period from the date of manufacture."
+  },
+  {
+    "rule_id": "CARE_001",
+    "rule_name": "Consumer Care Information",
+    "field": "customer_care",
+    "description": "Customer care / consumer complaint contact details should be provided.",
+    "is_required": true,
+    "severity": "MEDIUM",
+    "failure_message": "Consumer care or complaint contact information is missing.",
+    "recommendation": "Provide a consumer helpline number, email, or postal address for complaints."
+  },
+  {
+    "rule_id": "COO_001",
+    "rule_name": "Country of Origin",
+    "field": "country_of_origin",
+    "description": "Country of origin must be declared, especially for imported goods.",
+    "is_required": true,
+    "severity": "MEDIUM",
+    "failure_message": "Country of origin is not declared.",
+    "recommendation": "Mention the country where the product was manufactured or assembled."
+  },
+  {
+    "rule_id": "ING_001",
+    "rule_name": "Ingredients List",
+    "field": "ingredients",
+    "description": "List of ingredients in descending order of composition should be declared for food products.",
+    "is_required": false,
+    "severity": "MEDIUM",
+    "failure_message": "Ingredients list is not provided.",
+    "recommendation": "List all ingredients in descending order of their proportion by weight or volume."
+  },
+  {
+    "rule_id": "IMP_001",
+    "rule_name": "Importer Details (Imported Goods)",
+    "field": "importer",
+    "description": "For imported products, importer's name and address must be declared.",
+    "is_required": false,
+    "severity": "MEDIUM",
+    "failure_message": "Importer details are missing for what appears to be an imported product.",
+    "recommendation": "Include the name and address of the importer on the package."
+  },
+  {
+    "rule_id": "PKR_001",
+    "rule_name": "Packer Details",
+    "field": "packer",
+    "description": "Name and address of the packer if different from the manufacturer.",
+    "is_required": false,
+    "severity": "LOW",
+    "failure_message": "Packer details are not provided.",
+    "recommendation": "If the packer is different from the manufacturer, declare packer details."
+  },
+  {
+    "rule_id": "CLM_001",
+    "rule_name": "Product Claims Verification",
+    "field": "claims",
+    "description": "Any claims on the product (e.g., 'organic', 'sugar-free') should be verifiable.",
+    "is_required": false,
+    "severity": "LOW",
+    "failure_message": "Product claims are present but may need verification.",
+    "recommendation": "Ensure all product claims are substantiated and comply with advertising standards."
+  },
+  {
+    "rule_id": "BAR_001",
+    "rule_name": "Barcode / Product Identifier",
+    "field": "barcode",
+    "description": "A valid barcode or unique product identifier should be present on the package.",
+    "is_required": false,
+    "severity": "LOW",
+    "failure_message": "No barcode or product identifier found.",
+    "recommendation": "Include a standard barcode (EAN-13, UPC) for product identification and traceability."
+  },
+  {
+    "rule_id": "CAT_001",
+    "rule_name": "Product Category Declaration",
+    "field": "category",
+    "description": "Product category or type should be identifiable from the label.",
+    "is_required": false,
+    "severity": "LOW",
+    "failure_message": "Product category is not clearly identifiable.",
+    "recommendation": "Mention the product category or type for consumer clarity."
+  }
+]
