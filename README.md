@@ -1,4 +1,4 @@
-# PackCheck — Packaged Commodity Compliance & Consumer Awareness System
+# FOODLENS — Packaged Commodity Compliance & Consumer Awareness System
 
 An AI-driven compliance verification and consumer awareness platform designed for the **Smart India Hackathon (SIH)**. The system enables consumers and regulatory officers to scan or upload product packaging labels, extracts text via OCR, parses mandatory legal declarations under Legal Metrology / Packaged Commodities rules, and provides an instant compliance audit score with actionable recommendations.
 
