@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}FoodLens | Scan. Understand. Compare. Buy Better.{% endblock %}
+
+{% block content %}
+<section class="hero-band">
+    <div class="shell hero-grid">
+        <div class="hero-copy reveal">
+            <p class="eyebrow">Product label intelligence</p>
+            <h1>Scan. Understand.<br><span>Buy better.</span></h1>
+            <p class="hero-lede">Understand what is inside packaged products and spot potential label-compliance issues before you buy.</p>
+            <div class="button-row">
+                <a class="button button-primary" href="{{ url_for('scan.scan_page') }}#upload">⌗ <span>Scan product</span></a>
+                <a class="button button-secondary" href="{{ url_for('scan.scan_page') }}#upload">↑ <span>Upload product image</span></a>
+            </div>
+            <div class="hero-note"><span class="status-dot"></span> Preliminary screening powered by OCR and transparent rules</div>
+        </div>
+        <div class="scan-preview reveal reveal-delay" aria-label="Product scan preview">
+            <div class="preview-top"><span>LIVE PREVIEW</span><span class="preview-pulse">● Scanning ready</span></div>
+            <div class="scan-window"><div class="scan-corner corner-tl"></div><div class="scan-corner corner-br"></div><div class="scan-line"></div><div class="package-art"><span class="package-leaf">✦</span><strong>OAT<br>&amp; MILLET</strong><small>WHOLEGRAIN BISCUITS</small></div></div>
+            <div class="preview-caption"><span>Sample product label</span><span class="chip chip-green">✓ Label readable</span></div>
+        </div>
+    </div>
+</section>
+
+<section class="section shell" id="features">
+    <div class="section-heading"><div><p class="eyebrow">One clear view</p><h2>What FoodLens checks for you</h2></div><p>From a package photo to a more informed decision.</p></div>
+    <div class="feature-grid">
+        <a class="feature-card" href="{{ url_for('scan.scan_page') }}#upload"><span class="feature-icon icon-indigo">⌗</span><h3>Scan &amp; extract</h3><p>Upload package photos and extract names, dates, MRP, ingredients, and declarations with OCR.</p><span class="card-link">Start a scan →</span></a>
+        <a class="feature-card" href="{{ url_for('scan.scan_page') }}#upload"><span class="feature-icon icon-green">✓</span><h3>Compliance check</h3><p>Review extracted label information against configured Legal Metrology and food-labelling rules.</p><span class="card-link">Check a label →</span></a>
+        <a class="feature-card" href="#compare"><span class="feature-icon icon-purple">⇄</span><h3>Compare products</h3><p>See the details that matter side by side, including quantity, price, nutrition, and compliance standing.</p><span class="card-link">View comparison →</span></a>
+    </div>
+</section>
+
+<section class="section section-muted" id="how-it-works">
+    <div class="shell">
+        <div class="section-heading"><div><p class="eyebrow">Simple by design</p><h2>How FoodLens works</h2></div></div>
+        <div class="process-row">
+            <div class="process-step"><span class="step-number">01</span><div><h3>Scan</h3><p>Choose a barcode or upload a clear package photo.</p></div></div>
+            <span class="process-arrow">→</span>
+            <div class="process-step"><span class="step-number">02</span><div><h3>Extract</h3><p>OCR identifies the label details that matter.</p></div></div>
+            <span class="process-arrow">→</span>
+            <div class="process-step"><span class="step-number">03</span><div><h3>Verify</h3><p>Rules flag missing, unclear, or inconsistent declarations.</p></div></div>
+            <span class="process-arrow">→</span>
+            <div class="process-step"><span class="step-number">04</span><div><h3>Decide</h3><p>Use a clear report to compare and buy with confidence.</p></div></div>
+        </div>
+    </div>
+</section>
+
+<section class="section shell" id="compare">
+    <div class="section-heading"><div><p class="eyebrow">A better next choice</p><h2>Compare at a glance</h2></div><p>Make label information easier to act on.</p></div>
+    <div class="comparison-table" role="table" aria-label="Product comparison preview">
+        <div class="comparison-head" role="row"><span>Product</span><span>Net quantity</span><span>MRP</span><span>Status</span></div>
+        <div class="comparison-row" role="row"><strong>NutriCrunch Multigrain Biscuits</strong><span>200 g</span><span>₹45</span><span class="text-amber">Needs review</span></div>
+        <div class="comparison-row highlighted" role="row"><strong>Greenfield Oats &amp; Millet Biscuits</strong><span>180 g</span><span>₹52</span><span class="text-green">Compliant</span></div>
+        <div class="comparison-row" role="row"><strong>NutriCrunch Choco Cream Wafers</strong><span>75 g</span><span>₹30</span><span class="text-red">Verify label</span></div>
+    </div>
+</section>
+
+<section class="cta-band">
+    <div class="shell cta-content"><div><p class="eyebrow">Your next package</p><h2>Know what you are buying.</h2></div><a class="button button-dark" href="{{ url_for('scan.scan_page') }}#upload">Open scanner →</a></div>
+</section>
+{% endblock %}

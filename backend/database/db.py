@@ -22,9 +22,10 @@ def _get_pool():
                 password=Config.DB_PASSWORD,
                 database=Config.DB_NAME,
                 charset='utf8mb4',
-                collation='utf8mb4_unicode_ci'
+                collation='utf8mb4_unicode_ci',
+                connection_timeout=2
             )
-        except Error as e:
+        except Exception as e:
             print(f"[DB] Could not create connection pool: {e}")
             return None
     return _pool

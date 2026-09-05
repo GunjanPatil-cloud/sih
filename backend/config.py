@@ -28,5 +28,6 @@ class Config:
 
     # Paths
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-    UPLOAD_FOLDER = os.getenv('UPLOAD_FOLDER', os.path.join(BASE_DIR, 'uploads'))
+    _default_upload = '/tmp/uploads' if (os.environ.get('VERCEL') or not os.access(BASE_DIR, os.W_OK)) else os.path.join(BASE_DIR, 'uploads')
+    UPLOAD_FOLDER = os.getenv('UPLOAD_FOLDER', _default_upload)
     RULES_PATH = os.path.join(BASE_DIR, 'rules', 'commodity_rules.json')

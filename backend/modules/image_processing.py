@@ -1,7 +1,10 @@
-"""Image preprocessing with OpenCV for better OCR accuracy."""
-
-import cv2
-import numpy as np
+try:
+    import cv2
+    import numpy as np
+    CV2_AVAILABLE = True
+except Exception as e:
+    CV2_AVAILABLE = False
+    print(f"[IMG] OpenCV not available: {e}")
 
 
 def preprocess_image(image_path):
@@ -17,6 +20,9 @@ def preprocess_image(image_path):
 
     Returns: preprocessed image (numpy array) or None on failure.
     """
+    if not CV2_AVAILABLE:
+        return None
+
     try:
         img = cv2.imread(image_path)
         if img is None:
@@ -53,7 +59,9 @@ def preprocess_image(image_path):
 
 
 def preprocess_for_display(image_path):
-    """Lighter preprocessing — just resize for display purposes."""
+    """Lighter preprocessing - just resize for display purposes."""
+    if not CV2_AVAILABLE:
+        return None
     try:
         img = cv2.imread(image_path)
         if img is None:
